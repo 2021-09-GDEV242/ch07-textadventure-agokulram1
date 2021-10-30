@@ -20,7 +20,8 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
-
+    private Item roomItem;     // stores the objects in a room
+    // 8.21 - 1. created item object in this class as a class variable
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -32,7 +33,17 @@ public class Room
         this.description = description;
         exits = new HashMap<>();
     }
-
+    
+     /**
+     * 8.20 method to store the item
+     * @param itemDesc the item's description.
+     * @param itemWgt the item's weight.
+     */
+    public void storeItem(String itemDesc, int itemWgt) 
+    {
+        roomItem = new Item(itemDesc,itemWgt);
+        
+    }
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
@@ -57,10 +68,16 @@ public class Room
      *     You are in the kitchen.
      *     Exits: north west
      * @return A long description of this room
+     * 
+     * 8.20 added item to the long description
+     * You are in a computing lab, it has a Computer.
+     * Exits: east north
+     * 8.21 3. getLongDescription in room class is the best way to print the item description.
+     * 8.21 4. because we want to print in along with room details.
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ", it has a "+ roomItem.getItemDesc() + ".\n" + getExitString();
     }
 
     /**
