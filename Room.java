@@ -96,6 +96,14 @@ public class Room
     }
 
     /**
+     * Accessor method that returns the room item
+     * @return roomItem 
+     */
+    public Item getRoomItem(){
+        return roomItem;
+    }
+    
+    /**
      * Return the room that is reached if we go from this room in direction
      * "direction". If there is no room in that direction, return null.
      * @param direction The exit's direction.
@@ -105,5 +113,8 @@ public class Room
     {
         return exits.get(direction);
     }
+    
+    
+   
 }
 

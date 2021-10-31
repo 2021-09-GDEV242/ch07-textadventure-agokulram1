@@ -20,7 +20,9 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-    
+    // 8.23 to remember the previous room new variable previousRoom is added
+    private Room previousRoom;
+    private Player gamePlayer;
     /** this is the main method for the game class
      * @param args not needed
      */
@@ -86,7 +88,7 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+        gamePlayer = new Player("Gokul", 100, currentRoom);        
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -101,8 +103,8 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the World of Zuulu!");
+        System.out.println("World of Zuulu is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
@@ -141,6 +143,18 @@ public class Game
             case QUIT:
                 wantToQuit = quit(command);
                 break;
+            case BACK:
+                back();
+                break;
+            case DROP:
+                drop(command);
+                break;
+            case TAKE:
+                take();
+                break;
+                // 8.32 Implement an items command that prints out all items currently carried and their total weight.
+            case ITEMS:
+                items();
         }
         return wantToQuit;
     }
@@ -176,16 +190,51 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
+     
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
+            // 8.23 for back command we are storing previous room
+            previousRoom = currentRoom;
             currentRoom = nextRoom;
+            gamePlayer.setCurrentRoom(currentRoom);
             System.out.println(currentRoom.getLongDescription());
         }
     }
+    
+    /**
+     * Implementation for 8.32, prints all the items carried by the player
+     */
+    private void items(){
+        gamePlayer.printAllPlayerItems();
+    }
+    /**
+     * Implementation for 8.29. 2 word command, the player drops the item and his carry weight is reduced
+     * @param Command - Pass the command as the parameter
+     */
+    private void drop(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Drop What?");
+            return;
+        }
+
+        String dropitemname = command.getSecondWord();
+        gamePlayer.drop(dropitemname);
+    }
+    
+    /**
+     * Implementation for 8.29. The player picks up the item in the current room. He can only pickup what item is there in the room, so no parameter is necessary
+     */
+    private void take() 
+    {
+        gamePlayer.take(currentRoom.getRoomItem());
+    }
+    
     /**
      * this method prints the description of the room
      */
@@ -198,7 +247,20 @@ public class Game
      */
     private void eat()
     {
-     System.out.println("You have eaten now and are not hungry anymore");
+     int mweight = gamePlayer.eatCookie();
+     System.out.println("You have eaten now and are not hungry anymore, you can carry a maximum of "+mweight);
+    }
+    /**
+     * 8.23 the back command takes the player into the previous room he/she was in
+     *
+     */
+    private void back()
+    {
+     Room tempRoom = currentRoom;
+     currentRoom = previousRoom;
+     previousRoom = tempRoom;
+     gamePlayer.setCurrentRoom(currentRoom);
+     System.out.println(currentRoom.getLongDescription());
     }
     /** 
      * "Quit" was entered. Check the rest of the command to see
