@@ -39,13 +39,16 @@ public class Game
         parser = new Parser();
     }
 
+    
     /**
      * Create all the rooms and link their exits together.
      */
     private void createRooms()
     {
         Room outside, theater, pub, lab, office;
-         
+         // adding more rooms
+        Room library,dorm,bathRoom, pool, gymRoom, ladiesRoom, mensRoom, bookStore,groupStudyRoom,quietStudyRoom,
+        reflectionRoom, lockerRoom,restaurant,cafeteria,furnitureStore; 
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
@@ -53,29 +56,96 @@ public class Game
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
         
+        library = new Room("in a library");
+        dorm = new Room("in the dorm");
+        bathRoom = new Room("in the bathroom");
+        pool = new Room("in the poolroom");
+        gymRoom = new Room("in the gymroom");
+        ladiesRoom = new Room("in the ladiesroom");
+        mensRoom = new Room("in the mensroom");
+        bookStore = new Room("in the bookstore"); 
+        groupStudyRoom = new Room("in the group study room");
+        quietStudyRoom = new Room("in the quiet study room");
+        reflectionRoom = new Room("in the reflection room");
+        lockerRoom = new Room ("in the locker room");
+        restaurant = new Room("in the restaurant");
+        cafeteria = new Room("in the cafeteria");
+        furnitureStore = new Room ("in the furniture store");
         // initialise room exits
         outside.setExit("east", theater);
-      
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-        
         theater.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
+        outside.setExit("south", lab);
         lab.setExit("north", outside);
-        lab.setExit("east", office);
-
+        
+        outside.setExit("west", pub);
+        pub.setExit("east", outside);
+        
+        theater.setExit("east", library);
+        library.setExit("west", theater);
+        
+        theater.setExit("south", restaurant);
+        restaurant.setExit("north", theater);
+        
+        pub.setExit("north",pool);
+        pool.setExit("south",pub);
+        
+        pub.setExit("north",furnitureStore);
+        furnitureStore.setExit("south",pub);
+        
+        pool.setExit("east",gymRoom);
+        gymRoom.setExit("west",pool);
+        
+        gymRoom.setExit("south",cafeteria);
+        cafeteria.setExit("north",cafeteria);
+        bathRoom.setExit("west",lockerRoom);
+        lockerRoom.setExit("east",bathRoom);
+        
         office.setExit("west", lab);
-
+        lab.setExit("east", office);
+        lab.setExit("south",pool);
+        pool.setExit("north",lab);
+        lab.setExit("west",groupStudyRoom);
+        groupStudyRoom.setExit("east",lab);
+        
+        lab.setExit("south",reflectionRoom);
+        reflectionRoom.setExit("north",lab);
+       
+        office.setExit("south",bathRoom);
+        bathRoom.setExit("north",office);
+        
+        library.setExit("north",dorm);
+        dorm.setExit("south",library);
+        
+        library.setExit("south",bookStore);
+        bookStore.setExit("north",library);
+        
+        dorm.setExit("east",ladiesRoom);
+        ladiesRoom.setExit("west",dorm);
+        
+        mensRoom.setExit("south",dorm);
+        dorm.setExit("north",mensRoom);
         // 8.20 storing one item in each room.
         // 8.21 2. The item description is created here but passed as a param to the storeItem method which is in room class
         outside.storeItem("Bench",100);
         theater.storeItem("Screen",200);
         pub.storeItem("Food",5);
         lab.storeItem("Computer",60);
-        office.storeItem("Chair",25);
-        
+        library.storeItem("book",3);
+        dorm.storeItem("Bed",250);
+        bathRoom.storeItem("towel",2);
+        pool.storeItem("pool",250);
+        gymRoom.storeItem("treadmill",2500);
+        ladiesRoom.storeItem("shower",25);
+        mensRoom.storeItem("shower",25);
+        bookStore.storeItem("book",6);
+        groupStudyRoom.storeItem("table",90);
+        quietStudyRoom.storeItem("journal",15);
+        reflectionRoom.storeItem("yoga mat",2);
+        office.storeItem("laptop",25);
+        lockerRoom.storeItem("bag",15);
+        restaurant.storeItem("food",5);
+        cafeteria.storeItem("food",5);
+        furnitureStore.storeItem("sofa",250);
         currentRoom = outside;  // start game outside
     }
 

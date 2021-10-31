@@ -40,7 +40,8 @@ public class Player
      public void take(Item item)
     {
         if (carryweight + item.getItemWeight() > maxweight)
-            System.out.println("Too heavy for you, you can carry only upto "+maxweight+", you are already carrying "+carryweight);
+            System.out.println("Too heavy for you, you can carry only upto "+maxweight+", you are already carrying "+carryweight+
+            ". The item "+item.getItemDesc()+" is weighing "+item.getItemWeight());
             //return false;
         else {
             playitems.put(item.getItemDesc(), item);
