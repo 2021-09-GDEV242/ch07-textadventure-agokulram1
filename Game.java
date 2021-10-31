@@ -23,12 +23,15 @@ public class Game
     // 8.23 to remember the previous room new variable previousRoom is added
     private Room previousRoom;
     private Player gamePlayer;
+    // for A credit 
+    private long starttime;
+    private long endtime;
     /** this is the main method for the game class
      * @param args not needed
      */
     public static void main(String[] args) {
         Game game1 = new Game();
-        game1.play();
+        game1.play(Integer.parseInt(args[0]));
     }
     /**
      * Create the game and initialise its internal map.
@@ -151,22 +154,51 @@ public class Game
 
     /**
      *  Main play routine.  Loops until end of play.
+     *  Enter how long you want to play in minutes in the Play Time field below.
      */
-    public void play() 
+    public void play(int playtime) 
     {            
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
+        // For A credit setTimeLimit() and gameElapsed() is added
+        setTimeLimit(playtime);
         gamePlayer = new Player("Gokul", 100, currentRoom);        
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
-            finished = processCommand(command);
+            finished = gameElapsed();
+            if (!finished)
+                finished = processCommand(command);
+
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    /**
+     * For A credit
+     * Set time limit for how long to play
+     * @param playtime - How long to play in minutes
+     */
+    private void setTimeLimit(int playtime){
+        starttime = System.currentTimeMillis();
+        endtime = starttime+(playtime*60000);
+    }
+    /**
+     * For A credit
+     * Checks if the time limit is reached, if reached returns true else false
+     * @return - Returns true when the time limit is reached else false
+     */
+    private boolean gameElapsed(){
+        if (System.currentTimeMillis() >= endtime) {
+           System.out.println("Time Limit reached, I hope you had fun!");
+           return true;
+            }
+        else
+          return false;
+        }
+    
     /**
      * Print out the opening message for the player.
      */
