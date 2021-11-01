@@ -1,0 +1,36 @@
+ 
+1. Meaningful javadoc class header with appropriate text and updated @author and @version directives
+2. Meaningful javadoc method comment with appropriate directives (@param, @return, @throws, etc.)
+3. The javadoc is generated and in the doc directory of project directory
+4. Implemented main method for the game class that allows the game to be run outside of BlueJ
+5. The map contains 20 rooms
+6. 8.14 - added the look command 
+7. List for C credit
+    8.15 (p 303) - add another command, ie. eat with a simple text response 
+    8.16 (p 305) - Streamline printing of available commands
+8. List for B credit
+    8.20/8.21 (p 308) - add items to your game. Each room can have one item in it. Items have description and weight. When printing room info, Item should be included - Game.java
+    8.23 (p 309,310) - implement the back command (back one room)
+    8.28-8.33  (p 314) -add a Player that can carry one or more objects according to the options presented
+9. List for A credit
+    Time limit - Game.java: 201, 211, 173
+    Eat actually changes game state (increases health, allows player to lift heavier item, etc.) - Player.java:133
+10. Extra Credit
+    any features beyond the requirements in sections B and A count for extra credit on your project grade
+    each feature must have its own discrete commit in your repository
+    features that build or refactor are counted as separate features for example
+        implement an item
+        allow player to take item - Game.take() - Line 354
+        allow player to drop item - Game.drop() - Line 339
+        implement a collection of items as Inventory so player may have multiple items 
+            Player.java  -  HashMap<String, Item> playitems;
+        Add weight to items so player can only carry specified weight - 
+            Player.java   
+                private int maxweight;
+                private int carryweight;
+        Enhanced Messages for the player, that includes carry weight, max weight, health 
+        Control HealtMeter upper limit to give messages as 
+           You ate too much, and you cannot eat more - Player.java:130
+           Healthmeter increases by 2 when eat() - Player.java:133
+           Healthmeter reduces by 1 when take() - Player.java:44
+           When Healthmeter goes to 0, game ends. - Game.java: 187

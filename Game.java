@@ -26,6 +26,7 @@ public class Game
     // for A credit 
     private long starttime;
     private long endtime;
+    private int playTime;
     /** this is the main method for the game class
      * @param args not needed
      */
@@ -155,6 +156,7 @@ public class Game
     /**
      *  Main play routine.  Loops until end of play.
      *  Enter how long you want to play in minutes in the Play Time field below.
+     *  @param playtime Time limit in playing the game in minutes
      */
     public void play(int playtime) 
     {            
@@ -169,19 +171,35 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = gameElapsed();
+            if (!finished) 
+                finished = checkHealth();
             if (!finished)
                 finished = processCommand(command);
-
+           
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
-
+    
+    /**
+     * Checking player health to see if can continue in the game
+     * @return Healthy - if healthy return true else false
+     */
+    private boolean checkHealth(){
+        boolean unhealthy = (gamePlayer.getHealth() == 0);
+        if (unhealthy) 
+           System.out.println("You're health is 0, Game Over!!!");    
+        return unhealthy;  
+        }
+    
+                 
+                 
     /**
      * For A credit
      * Set time limit for how long to play
      * @param playtime - How long to play in minutes
      */
     private void setTimeLimit(int playtime){
+        playTime = playtime;
         starttime = System.currentTimeMillis();
         endtime = starttime+(playtime*60000);
     }
@@ -192,7 +210,7 @@ public class Game
      */
     private boolean gameElapsed(){
         if (System.currentTimeMillis() >= endtime) {
-           System.out.println("Time Limit reached, I hope you had fun!");
+           System.out.println("Time Limit reached, you played for "+playTime+" minutes. I hope you had fun!");
            return true;
             }
         else
@@ -257,6 +275,7 @@ public class Game
                 // 8.32 Implement an items command that prints out all items currently carried and their total weight.
             case ITEMS:
                 items();
+                break;
         }
         return wantToQuit;
     }
@@ -349,8 +368,11 @@ public class Game
      */
     private void eat()
     {
-     int mweight = gamePlayer.eatCookie();
-     System.out.println("You have eaten now and are not hungry anymore, you can carry a maximum of "+mweight);
+     boolean ate = gamePlayer.eatCookie();
+     if (ate)
+     System.out.println("You have eaten now and are not hungry anymore, you can carry a maximum of "
+     +gamePlayer.getMaxWeight()+
+     ", your health is at "+gamePlayer.getHealth());
     }
     /**
      * 8.23 the back command takes the player into the previous room he/she was in
